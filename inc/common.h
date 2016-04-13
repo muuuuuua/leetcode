@@ -34,6 +34,14 @@ ListNode *makeList(int array[], int n) {
 }
 
 template<class T>
+void printVector(vector<T> v) {
+    for(int i = 0;i < v.size();i++) {
+        cout<<v[i]<<" ";
+    }
+    cout<<endl;
+}
+
+template<class T>
 vector<T> arrayToVector(T array[], int n) {
     vector<T> res;
     for(int i = 0;i < n;i++) {
