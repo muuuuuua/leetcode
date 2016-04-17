@@ -1,1 +1,1 @@
-hello
+simple leetcode solution
