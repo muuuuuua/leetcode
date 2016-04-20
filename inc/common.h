@@ -1,8 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <cstdlib>
 #include <utility>
 #include <string>
+#include <sstream>
 #include <stack>
 #include <queue>
 
