@@ -36,19 +36,19 @@ vector<string> findItinerary(vector<pair<string, string> > tickets) {
         }
     }
     vector<string> res;
-    string from = "JFK";
-    res.push_back(from);
-    for(int i = 0;i < tickets.size();i++) {
-        vector<string> temp = map[from];
-        vector<string>::iterator it = temp.begin();
-        if(i != tickets.size()-1)
-            while(map.find(*it) == map.end() || map[*it].size() == 0)
-                it++;
-        string to = *it;
-        res.push_back(to);
-        temp.erase(it);
-        map[from] = temp;
-        from = to;
+    stack<string> s;
+    s.push("JFK");
+
+    while(!s.empty()) {
+        string from = s.top();
+        while(map.find(from) != map.end() && map[from].size() != 0) {
+            s.push(map[from][0]);
+            map[from].erase(map[from].begin());
+            from = s.top();
+        }
+        string t = s.top();
+        s.pop();
+        res.insert(res.begin(), t);
     }
     return res;
 }
