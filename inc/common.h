@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stack>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
@@ -44,12 +45,12 @@ void printVector(vector<T> v) {
     cout<<endl;
 }
 
-template<class T>
-vector<T> arrayToVector(T array[], int n) {
+template<class T, size_t N>
+vector<T> arrayToVector(T (&array)[N]) {
     vector<T> res;
-    for(int i = 0;i < n;i++) {
+    for(int i = 0;i < N;i++) {
         res.push_back(array[i]);
     }
-   return res;
+    return res;
 }
 
