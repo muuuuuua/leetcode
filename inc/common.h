@@ -48,6 +48,22 @@ void printVector(vector<T> v) {
     cout<<endl;
 }
 
+template<class T>
+void printStackRec(stack<T> v) {
+    if(v.empty())
+        return;
+    int t = v.top();
+    v.pop();
+    printStackRec(v);
+    cout<<t<<" ";
+}
+
+template<class T>
+void printStack(stack<T> v) {
+    printStackRec(v);
+    cout<<endl;
+}
+
 template<class T, size_t N>
 vector<T> arrayToVector(T (&array)[N]) {
     vector<T> res;
