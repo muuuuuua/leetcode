@@ -48,6 +48,18 @@ void print(unordered_set<T> v) {
     cout<<endl;
 }
 
+void print(string s) {
+    cout<<s<<" ";
+}
+
+template<class T>
+void print(vector<T> v) {
+    for(int i = 0;i < v.size();i++) {
+        print(v[i]);
+    }
+    cout<<endl;
+}
+
 template<class T>
 void printVector(vector<T> v) {
     for(int i = 0;i < v.size();i++) {
