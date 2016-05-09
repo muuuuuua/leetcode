@@ -41,6 +41,14 @@ ListNode *makeList(int array[], int n) {
 }
 
 template<class T>
+void print(unordered_set<T> v) {
+    for(typename unordered_set<T>::iterator it = v.begin();it != v.end();it++) {
+        cout<<*it<<" ";
+    }
+    cout<<endl;
+}
+
+template<class T>
 void printVector(vector<T> v) {
     for(int i = 0;i < v.size();i++) {
         cout<<v[i]<<" ";
@@ -73,3 +81,11 @@ vector<T> arrayToVector(T (&array)[N]) {
     return res;
 }
 
+template<class T, size_t N>
+unordered_set<T> arrayToSet(T (&array)[N]) {
+    unordered_set<T> res;
+    for(int i = 0;i < N;i++) {
+        res.insert(array[i]);
+    }
+    return res;
+}
