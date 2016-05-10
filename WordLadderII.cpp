@@ -3,53 +3,76 @@
  */
 #include "inc/common.h"
 
-vector<vector<string> > findLadders(string beginWord, string endWord, unordered_set<string> &wordList) {
-    vector<vector<string> > res;
-    if(beginWord == endWord) {
-        vector<string> t;
-        t.push_back(beginWord);
-        t.push_back(endWord);
-        res.push_back(t);
-        return res;
+void dfs(string start, string end, vector<string> temp, unordered_map<string, vector<string> > &record, vector<vector<string> > &res) {
+    if(start == end) {
+        res.push_back(temp);
+        return;
     }
-    queue<vector<string> > q1, q2;
-    vector<string> start;
-    start.push_back(beginWord);
-    q1.push(start);
-    bool found = false;
-    while(!q1.empty()) {
-        q2 = q1;
-        while(!q2.empty()) {
-            vector<string> t = q2.front();
-            q2.pop();
-            wordList.erase(t.back());
-        }
-        while(!q1.empty()) {
-            vector<string> s = q1.front();
-            q1.pop();
-            int len = s.back().size();
-            for(int i = 0;i < len;i++) {
-                string temp = s.back();
-                for(char c = 'a';c <= 'z';c++) {
-                    temp[i] = c;
-                    if(temp == endWord) {
-                        found = true;
-                        vector<string> sw = s;
-                        sw.push_back(temp);
-                        res.push_back(sw);
-                    }
-                    if(temp == s.back() || wordList.find(temp) == wordList.end())
-                        continue;
-                    vector<string> sw = s;
-                    sw.push_back(temp);
-                    q2.push(sw);
+    if(record.find(start) == record.end())
+        return;
+    vector<string> arr = record[start];
+    for(int i = 0;i < arr.size();i++) {
+        temp.push_back(arr[i]);
+        dfs(arr[i], end, temp, record, res);
+        temp.pop_back();
+    }
+}
+
+void bfs(unordered_set<string> forword, unordered_set<string> backword, unordered_set<string> &wordList, bool swap, unordered_map<string, vector<string> > &record, bool &found) {
+    if(forword.empty() || backword.empty())
+        return;
+    if(forword.size() > backword.size()) {
+        bfs(backword, forword, wordList, !swap, record, found);
+        return;
+    }
+    for(unordered_set<string>::iterator it = forword.begin();it != forword.end();it++)
+        wordList.erase(*it);
+    for(unordered_set<string>::iterator it = backword.begin();it != backword.end();it++)
+        wordList.erase(*it);
+
+    unordered_set<string> cur;
+    for(unordered_set<string>::iterator it = forword.begin();it != forword.end();it++) {
+        string str = *it;
+        for(int i = 0;i < str.size();i++) {
+            string temp = str;
+            for(char c = 'a';c <= 'z';c++) {
+                temp[i] = c;
+                if(backword.find(temp) == backword.end() && wordList.find(temp) == wordList.end())
+                    continue;
+                string key = !swap?str:temp;
+                string val = !swap?temp:str;
+                if(record.find(key) == record.end())
+                    record[key] = vector<string>();
+                if(backword.find(temp) != backword.end()) {
+                    found = true;
+                    record[key].push_back(val);
+                }
+                if(!found && wordList.find(temp) != wordList.end()) {
+                    record[key].push_back(val);
+                    cur.insert(temp);
                 }
             }
         }
-        if(found)
-            break;
-        q1.swap(q2);
     }
+
+    if(!found)
+        bfs(cur, backword, wordList, swap, record, found);
+
+}
+
+vector<vector<string> > findLadders(string beginWord, string endWord, unordered_set<string> &wordList) {
+    vector<vector<string> > res;
+    unordered_set<string> forword, backword;
+    forword.insert(beginWord);
+    backword.insert(endWord);
+    unordered_map<string, vector<string> > record;
+    bool found = false;
+    bfs(forword, backword, wordList, false, record, found);
+    if(!found)
+        return res;
+    vector<string> temp;
+    temp.push_back(beginWord);
+    dfs(beginWord, endWord, temp, record, res);
     return res;
 }
 
