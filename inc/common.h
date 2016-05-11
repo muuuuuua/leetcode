@@ -29,10 +29,12 @@ struct ListNode {
 
 TreeNode *makeTree();
 
-ListNode *makeList(int array[], int n) {
+template<size_t N>
+ListNode *makeList(int (&array)[N]) {
+    if(N == 0) return NULL;
     ListNode *head = new ListNode(array[0]);
     ListNode *p = head;
-    for(int i = 1;i < n;i++) {
+    for(int i = 1;i < N;i++) {
         ListNode *t = new ListNode(array[i]);
         p->next = t;
         p = t;
@@ -48,8 +50,20 @@ void print(unordered_set<T> v) {
     cout<<endl;
 }
 
+void print(ListNode *head) {
+    while(head != NULL) {
+        cout<<head->val<<" ";
+        head = head->next;
+    }
+    cout<<endl;
+}
+
 void print(string s) {
     cout<<s<<" ";
+}
+
+void print(int a) {
+    cout<<a<<" ";
 }
 
 template<class T>
