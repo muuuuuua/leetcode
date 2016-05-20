@@ -62,6 +62,10 @@ void print(string s) {
     cout<<s<<" ";
 }
 
+void print(char c) {
+    cout<<c<<" ";
+}
+
 void print(int a) {
     cout<<a<<" ";
 }
