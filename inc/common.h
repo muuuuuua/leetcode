@@ -27,7 +27,24 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-TreeNode *makeTree();
+void print(ListNode *head) {
+    while(head != NULL) {
+        cout<<head->val<<" ";
+        head = head->next;
+    }
+    cout<<endl;
+}
+
+struct Interval {
+    int start;
+    int end;
+    Interval() : start(0), end(0) {}
+    Interval(int s, int e) : start(s), end(e) {}
+};
+
+void print(Interval i) {
+    cout<<"["<<i.start<<","<<i.end<<"]"<<endl;
+}
 
 template<size_t N>
 ListNode *makeList(int (&array)[N]) {
@@ -50,13 +67,6 @@ void print(unordered_set<T> v) {
     cout<<endl;
 }
 
-void print(ListNode *head) {
-    while(head != NULL) {
-        cout<<head->val<<" ";
-        head = head->next;
-    }
-    cout<<endl;
-}
 
 void print(string s) {
     cout<<s<<" ";
@@ -67,6 +77,10 @@ void print(char c) {
 }
 
 void print(int a) {
+    cout<<a<<" ";
+}
+
+void print(long long a) {
     cout<<a<<" ";
 }
 

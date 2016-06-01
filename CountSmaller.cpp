@@ -3,48 +3,46 @@
  */
 #include "inc/common.h"
 
-struct Node {
-    Node *left;
-    Node *right;
-    int val;
-    int sum;
-    Node(int x):val(x),sum(1),left(NULL),right(NULL) {}
-};
-
-int insert(int val, Node *root) {
-    int count = 0;
-    while(true) {
-        if(val <= root->val) {
-            root->sum++;
-            if(root->left == NULL) {
-                root->left = new Node(val);
-                break;
-            }
-            else
-                root = root->left;
+class FenwickTree {
+private:
+    int lowbit(int x) { 
+        return x&(-x);
+    }
+    vector<int> count;
+    int n;
+public:
+    FenwickTree(int size):n(size) {
+        count = vector<int>(n+1, 0);
+    }
+    int sum(int x) {
+        int ans = 0;
+        while(x > 0) {
+            ans += count[x];
+            x -= lowbit(x);
         }
-        else {
-            count += root->sum;
-            if(root->right == NULL) {
-                root->right = new Node(val);
-                break;
-            }
-            else
-                root = root->right;
+        return ans;
+    }
+    void update(int x, int val) {
+        while(x <= n) {
+            count[x] += val;
+            x += lowbit(x);
         }
     }
-    return count;
-}
+};
 
 vector<int> countSmaller(vector<int>& nums) {
     vector<int> res;
-    if(nums.size() == 0)
-        return res;
-    Node *root = new Node(nums.back());
-    res.insert(res.begin(), 0);
-    for(int i = nums.size()-2;i >= 0;i--) {
-        int t = insert(nums[i], root);
-        res.insert(res.begin(), t);
+    if(nums.size() == 0) return res;
+    FenwickTree tree(nums.size());
+    res = vector<int>(nums.size(), 0);
+    vector<int> temp = nums;
+    sort(temp.begin(), temp.end());
+    unordered_map<int, int> map;
+    for(int i = 0;i < temp.size();i++)
+        map[temp[i]] = i+1;
+    for(int i = nums.size()-1;i >= 0;i--) {
+        res[i] = tree.sum(map[nums[i]]-1);
+        tree.update(map[nums[i]], 1);
     }
     return res;
 }
@@ -53,6 +51,6 @@ int main() {
     int a[] = {26,78,27,100,33,67,90,23,66,5,38,7,35,23,52,22,83,51,98,69,81,32,78,28,94,13,2,97,3,76,99,51,9,21,84,66,65,36,100,41};
     vector<int> b = arrayToVector(a);
     vector<int> c = countSmaller(b);
-    printVector(c);
+    print(c);
     return 0;
 }
