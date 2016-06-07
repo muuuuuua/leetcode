@@ -84,6 +84,15 @@ void print(long long a) {
     cout<<a<<" ";
 }
 
+template<class T, class S>
+void print(pair<T, S> p) {
+    cout<<"[";
+    print(p.first);
+    cout<<",";
+    print(p.second);
+    cout<<"]";
+}
+
 template<class T>
 void print(vector<T> v) {
     for(int i = 0;i < v.size();i++) {

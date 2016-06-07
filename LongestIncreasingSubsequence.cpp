@@ -3,46 +3,35 @@
  */
 #include "inc/common.h"
 
-int replace(vector<int>& dp, int l, int r, int x) {
+void replace(vector<int>& dp, int l, int r, int x) {
     if(l >= r) {
         dp[l] = x;
-        return l;
+        return;
     }
     int mid = (l+r)/2;
-    if(dp[mid] < x) {
-        return replace(dp, mid+1, r, x);
+    if(dp[mid] == x) {
+        return;
     }
-    else if(dp[mid] == x) {
-        return mid;
+    else if(dp[mid] > x) {
+        replace(dp, l, mid, x);
     }
     else {
-        if(mid-1 >= l && dp[mid-1] < x) {
-            dp[mid] = x;
-            return mid;
-        }
-        else {
-            return replace(dp, l, mid-1, x);
-        }
+        replace(dp, mid+1, r, x);
     }
 }
 
 int lengthOfLIS(vector<int>& nums) {
-    if(nums.size() <= 1)
-        return nums.size();
+    int n = nums.size();
+    if(n <= 1) return n;
     vector<int> dp;
     dp.push_back(nums[0]);
-    int len = 1;
-    int maxL = 0;
-    for(int i = 1;i < nums.size();i++) {
-        if(nums[i] > dp.back()) {
+    for(int i = 1;i < n;i++) {
+        if(nums[i] > dp.back())
             dp.push_back(nums[i]);
-            len = dp.size();
-        }
         else
-            len = 1+replace(dp, 0, dp.size()-1, nums[i]);
-        maxL = maxL > len ? maxL : len;
+            replace(dp, 0, dp.size(), nums[i]);
     }
-    return maxL;
+    return dp.size();
 }
 
 int main() {
