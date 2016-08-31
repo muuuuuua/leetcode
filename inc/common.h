@@ -102,6 +102,15 @@ void print(vector<T> v) {
     cout<<endl;
 }
 
+template<class T, class S>
+void print(unordered_map<T,S> map) {
+    for(typename unordered_map<T,S>::iterator it = map.begin();it != map.end();it++) {
+        print(it->first);
+        cout<<":";
+        print(it->second);
+    }
+}
+
 template<class T>
 void printVector(vector<T> v) {
     for(int i = 0;i < v.size();i++) {

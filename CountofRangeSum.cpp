@@ -13,7 +13,7 @@ struct SegTreeNode {
 class SegTree {
 private:
     SegTreeNode *root;
-    SegTreeNode *buildTree(vector<long long> nums, int l, int r) {
+    SegTreeNode *buildTree(vector<long long> &nums, int l, int r) {
         if(l > r) return NULL;
         SegTreeNode *root = new SegTreeNode(nums[l], nums[r]);
         if(l == r) return root;
@@ -34,9 +34,18 @@ private:
             update(root->right, val);
         }
     }
+    void freeMem(SegTreeNode *root) {
+        if(root == NULL) return;
+        freeMem(root->left);
+        freeMem(root->right);
+        delete root;
+    }
 public:
     SegTree(vector<long long> nums, int l, int r) {
         root = buildTree(nums, l, r);
+    }
+    ~SegTree() {
+        freeMem(root);
     }
     int sum(long long l, long long r) {
         return sum(root, l, r);
