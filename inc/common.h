@@ -81,6 +81,10 @@ void print(int a) {
     cout<<a<<" ";
 }
 
+void print(double a) {
+    cout<<a<<" ";
+}
+
 void print(long long a) {
     cout<<a<<" ";
 }
